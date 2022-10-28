@@ -11,3 +11,44 @@ Se busca que la funcionalidad de esta API sea dinámica. Segun las materias dada
 ## **SETUP del proyecto**
 
 ```composer create-project laravel/laravel PicNote-API```
+
+## **DISEÑO**
+
+Diseño prototipo para generar un diagrama en [**dbDiagram.io**](https://dbdiagram.io/):
+
+```SQL
+Table User {
+  userID int
+  username varchar 
+  password password
+}
+
+Table Course{
+  courseID int
+  albumID int [ref: > Album.albumID]
+  name varchar
+  group char
+  grade int
+  schedule datetime
+  daysperweek list
+}
+
+Table Album{
+  albumID int
+  userID int [ref: > User.userID]
+  name varchar
+  desc varchar
+}
+
+Table Note {
+  noteID int
+  courseID int [ref: > Course.courseID]
+  imageUrl varchar
+  title varchar
+  desc varchar
+  creationDate datetime
+  isHomework boolean
+  dueTo datetime
+}
+```
+![](doc/img/tablesDesign.png)
