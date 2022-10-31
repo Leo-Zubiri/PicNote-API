@@ -2,6 +2,8 @@
 
 La documentación busca registrar todos los aspectos importantes desde la configuración hasta la finalización de ésta API hecha con el framework laravel (PHP).
 
+[**Consultar código primordial para esta API>>>**](doc/markdown/README.md)
+
 La funcionalidad esperada queda descrita a continuación:
 
 Se dan de alta apuntes tomados como fotografías o notas, estos apuntes pertenecen a materias de las cuales se toman clases. El objetivo es conseguir una manipulación tipo álbum, con mayor organización de apuntes según las respectivas materias a las que pertenecen.
