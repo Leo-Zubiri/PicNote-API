@@ -125,3 +125,42 @@ Schema::create('notes', function (Blueprint $table) {
     $table->timestamps();
 });
 ```
+<br>
+
+## **RELACIONES**
+
+> Desde cada modelo creado se deben establacer las relaciones que se tienen con otras entidades.
+
+```php
+User
+public function albums(){
+    // Un usuario tiene varios albumes
+    return $this->hasMany(Album::class);
+}
+
+
+Album
+public function user(){
+    return $this->belongsTo(User::class);
+}
+
+public function courses(){
+    return $this->hasMany(Course::class);
+}
+
+
+Course
+public function album(){
+    return $this->belongsTo(Album::class);
+}
+
+public function notes(){
+    return $this->hasMany(Note::class);
+}
+
+
+Note
+public function course(){
+    return $this->belongsTo(Course::class);
+}
+```

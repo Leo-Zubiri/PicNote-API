@@ -41,4 +41,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function albums(){
+        // Un usuario tiene varios albumes
+        return $this->hasMany(Album::class);
+    }
 }
