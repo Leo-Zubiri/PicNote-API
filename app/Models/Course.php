@@ -9,7 +9,15 @@ class Course extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'album_id',
+        'name',
+        'group',
+        'grade',
+        'start_schedule',
+        'end_schedule',
+        'daysperweek'
+    ];
 
     public function album(){
         return $this->belongsTo(Album::class);

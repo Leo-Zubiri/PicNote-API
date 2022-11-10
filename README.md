@@ -164,3 +164,26 @@ public function course(){
     return $this->belongsTo(Course::class);
 }
 ```
+
+---
+
+## **RUTAS**
+
+> Rutas para el consumo de las funcionalidades de la API
+
+- /
+  
+- user/create
+- user/{user}
+- user/{user}/albums
+
+- album/create
+- album/{album}
+- album/{album}/courses
+
+- course/create
+- course/{course}
+- course/{course}/notes
+
+- note/create
+- note/{note}

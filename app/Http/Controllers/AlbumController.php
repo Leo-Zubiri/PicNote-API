@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Models\User;
+
 use Illuminate\Http\Request;
 
 class AlbumController extends Controller
@@ -12,9 +14,11 @@ class AlbumController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $usuario)
     {
-        //
+        $albums = User::find($usuario)->albums();
+        $paginador = $albums::paginate(10);
+        return $paginador;
     }
 
     /**
@@ -25,7 +29,13 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'user_id' => ['required'],
+            'name' => ['required']
+        ]);
+
+        $newAlbum = Album::create($request->all());
+        return response()->json([$newAlbum]);
     }
 
     /**
@@ -36,7 +46,9 @@ class AlbumController extends Controller
      */
     public function show(Album $album)
     {
-        //
+        $notes = Album::find($album)->courses();
+        $paginador = $notes::paginate(10);
+        return $paginador;
     }
 
     /**
@@ -60,5 +72,10 @@ class AlbumController extends Controller
     public function destroy(Album $album)
     {
         //
+    }
+
+    public function getCourses(Album $album){
+        $courses = $album->courses();
+        return $courses;
     }
 }

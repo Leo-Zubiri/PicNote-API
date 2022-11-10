@@ -62,4 +62,9 @@ class UserController extends Controller
     {
         //
     }
+
+    public function getAlbums(User $user){
+        $albums = $user->albums();
+        return $albums;
+    }
 }
