@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -24,9 +25,19 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {   
-        return User::create($request->all());
+        $user = User::create([
+            'name' => $request->name, 
+            'email' => $request->email,
+            'password' => Hash::make( $request->password )
+        ]);
+
+        return response()->json([
+            "succes"=>true,
+            "message"=>"User signup succesfull",
+            "email"=>$user->email
+        ]);
     }
 
     /**
@@ -35,9 +46,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+
+    public function show(User $user)
     {
-        //
+
     }
 
     /**
@@ -47,9 +59,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        $user->update($request->all());
+
+        return response()->json([
+            "succes"=>true,
+            "message"=>"User updated succesfull",
+        ]);
     }
 
     /**
@@ -58,9 +75,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->json([
+            "succes"=>true,
+            "message"=>"User eliminated",
+        ]);
     }
 
     public function getAlbums(User $user){

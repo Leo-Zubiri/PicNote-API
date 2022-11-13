@@ -187,3 +187,78 @@ public function course(){
 
 - note/create
 - note/{note}
+
+---
+
+<br>
+
+## **Validaciones a los Requests**
+
+```php artisan make:request UserRequest```
+
+> Lo anterior crea archivo en app/http/requests
+
+Dentro del archivo UserRequest.php se deben agregar las importaciones:
+
+```php
+namespace App\Http\Requests;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
+```
+
+Se debe agregar los siguientes métodos:
+
+```php
+ public function rules()
+  {
+      return [
+          'name' => 'required',
+          'email' => 'required|email|unique:users',
+          'password' => 'required|min:6'
+      ];
+  }
+
+  //El formato json que retorna
+  public function failedValidation(Validator $validator)
+  {
+      throw new HttpResponseException(response()->json([
+          'success'   => false,
+          'message'   => 'Validation errors',
+          'data'      => $validator->errors()
+      ]));
+  }
+
+  /*
+  Si se quiere sobreescribir los mensajes de error por defecto de laravel
+  public function messages()
+  {
+      return [
+          'email.required' => 'Email is required',
+          'email.email' => 'Email is not correct'
+      ];
+  }
+  */
+```
+
+> Por defecto laravel tiene retorno de mensajes para las reglas que se indiquen (required,min:5,etc)
+
+
+Por último se sustituye en el método donde se desee aplicar las reglas:
+
+**UserController.php**
+
+```php
+use App\Http\Requests\UserRequest;
+
+...
+
+public function store(UserRequest $request)
+{   
+
+}
+```
+
+> Aunque no tenga contenido el método store se está evaluando por que se espera que el request sea de tipo UserRequest
+
+![](doc/img/requestRules.png)
