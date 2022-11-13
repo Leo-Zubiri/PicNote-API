@@ -25,9 +25,13 @@ Route::put('user/{user}','App\Http\Controllers\UserController@update');
 Route::delete('user/{user}','App\Http\Controllers\UserController@destroy');
 Route::get('user/{user}/albums','App\Http\Controllers\UserController@getAlbums');
 
-Route::post('album/create','App\Http\Controllers\AlbumController@store');
-Route::get('album/{album}','App\Http\Controllers\AlbumController@show');
-Route::put('album/{album}','App\Http\Controllers\AlbumController@update');
-Route::delete('album/{album}','App\Http\Controllers\AlbumController@destroy');
-Route::get('album/{album}/courses','App\Http\Controllers\AlbumController@getCourses');
 
+
+
+Route::group(["middleware" => "auth:api"], function () {
+    Route::post('/album/create','App\Http\Controllers\AlbumController@store');
+    Route::get('album/{album}','App\Http\Controllers\AlbumController@show');
+    Route::put('album/{album}','App\Http\Controllers\AlbumController@update');
+    Route::delete('album/{album}','App\Http\Controllers\AlbumController@destroy');
+    Route::get('album/{album}/courses','App\Http\Controllers\AlbumController@getCourses');
+});

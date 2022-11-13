@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
@@ -30,13 +31,15 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name, 
             'email' => $request->email,
-            'password' => Hash::make( $request->password )
+            'password' => Hash::make( $request->password ),
+            'api_token' => Str::random(60),
         ]);
 
-        return response()->json([
-            "succes"=>true,
-            "message"=>"User signup succesfull",
-            "email"=>$user->email
+        
+        return jsend_success([
+            "message"=>"User stored",
+            "email"=>$user->email,
+            'api_token' => $user->api_token,
         ]);
     }
 
@@ -63,10 +66,7 @@ class UserController extends Controller
     {
         $user->update($request->all());
 
-        return response()->json([
-            "succes"=>true,
-            "message"=>"User updated succesfull",
-        ]);
+        return jsend_success(["message"=>"User updated"]);
     }
 
     /**
@@ -78,10 +78,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return response()->json([
-            "succes"=>true,
-            "message"=>"User eliminated",
-        ]);
+        return jsend_success(["message"=>"User eliminated"]);
     }
 
     public function getAlbums(User $user){

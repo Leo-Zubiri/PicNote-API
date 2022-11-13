@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class UserRequest extends FormRequest
+class AlbumStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,10 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        //Importante respetar los tamaños de los schemas
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6'
+            'name' => 'required|min:1|max:25',
+            'description' => 'max:255',
         ];
     }
 
@@ -36,15 +36,4 @@ class UserRequest extends FormRequest
     {
         throw new HttpResponseException(jsend_fail([$validator->errors()]));
     }
-
-    /*
-    Si se quiere sobreescribir los mensajes de error por defecto de laravel
-    public function messages()
-    {
-        return [
-            'email.required' => 'Email is required',
-            'email.email' => 'Email is not correct'
-        ];
-    }
-    */
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Http\Requests\AlbumStoreRequest;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -14,6 +15,8 @@ class AlbumController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index(User $usuario)
     {
         $albums = User::find($usuario)->albums();
@@ -29,13 +32,9 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'user_id' => ['required'],
-            'name' => ['required']
-        ]);
 
-        $newAlbum = Album::create($request->all());
-        return response()->json([$newAlbum]);
+        //$newAlbum = Album::create($request->all());
+        return jsend_success(["message"=>"NICE"]);
     }
 
     /**

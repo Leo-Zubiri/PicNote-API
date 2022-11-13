@@ -262,3 +262,86 @@ public function store(UserRequest $request)
 > Aunque no tenga contenido el método store se está evaluando por que se espera que el request sea de tipo UserRequest
 
 ![](doc/img/requestRules.png)
+
+---
+
+<br>
+
+## **API AUTH**
+
+[**Sobre la autenticacion de API**](https://laravel.com/docs/5.8/api-authentication)
+
+>  En la ruta /config/auth.php ya se encuentra una protección para las api mediante tokens
+
+Se debe crear una nueva migración para la tabla User en donde se creará un nuevo atributo para guardar el token
+
+```php artisan make:migration add_apitoken_touserstable```
+
+```php
+Schema::table('users', function ($table) {
+    $table->string('api_token', 80)->after('password')
+        ->unique()
+        ->nullable()
+        ->default(null);
+});
+```
+```php artisan migrate```
+
+Durante la creacion de los usuarios se debe agregar el campo del ApiKey
+
+```php
+    return User::create([
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+        'api_token' => Str::random(60),
+    ]);
+```
+
+Se agrega la siguiente definicion en config.php
+
+```php
+'api' => [
+    'driver' => 'token',
+    'provider' => 'users',
+    'hash' => false,
+],
+```
+
+Es decir:
+
+```php
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
+    'api' => [
+        'driver' => 'token',
+        'provider' => 'users',
+        'hash' => false,
+    ],
+],
+```
+
+**Se protegen todas las rutas necesarias**
+
+```php
+Route::group(["middleware" => "auth:api"], function () {
+    Route::post('/album/create','App\Http\Controllers\AlbumController@store');
+    Route::get('album/{album}','App\Http\Controllers\AlbumController@show');
+    Route::put('album/{album}','App\Http\Controllers\AlbumController@update');
+    Route::delete('album/{album}','App\Http\Controllers\AlbumController@destroy');
+    Route::get('album/{album}/courses','App\Http\Controllers\AlbumController@getCourses');
+});
+```
+
+> Ahora dentro del Header de las peticiones debe haber dos elementos importantes:
+
+- Accept=application/json
+- api_token= token...
+
+
+![](doc/img/authApiResult.png)
+
+---
