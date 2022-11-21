@@ -9,15 +9,15 @@ class Note extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'course_id',
-        'image_url',
-        'title',
-        'description',
-        'isHomework',
-        'dueTo'
+        'album_id',
+        'image_url'
+        // 'title',
+        // 'description',
+        // 'isHomework',
+        // 'dueTo'
     ];
 
     public function course(){
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Album::class);
     }
 }

@@ -17,7 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('name', 25);
-            $table->string('description');
+            $table->char('group',4);
+            $table->tinyInteger('grade');
+            $table->dateTime('start_schedule');
+            $table->dateTime('end_schedule');
+            $table->string('daysperweek',100);
             $table->timestamps();
         });
     }

@@ -60,7 +60,7 @@ Table Note {
   dueTo datetime
 }
 ```
-![](doc/img/tablesDesign.png)
+![](doc/img/tablesDesignV2.png)
 
 ---
 
@@ -77,8 +77,6 @@ Table Note {
 
 ```php artisan make:model Album -c -m -f --api```
 
-```php artisan make:model Course -c -m -f --api```
-
 ```php artisan make:model Note -c -m -f --api```
 
 > **NOTA:** El modelo User viene creado por defecto en cada proyecto laravel
@@ -94,16 +92,6 @@ Schema::create('albums', function (Blueprint $table) {
     $table->id();
     $table->foreignId('user_id')->constrained();
     $table->string('name', 25);
-    $table->string('description');
-    $table->timestamps();
-});
-```
-
-```php
-Schema::create('courses', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('album_id')->constrained();
-    $table->string('name',100);
     $table->char('group',4);
     $table->tinyInteger('grade');
     $table->dateTime('start_schedule');
@@ -116,12 +104,12 @@ Schema::create('courses', function (Blueprint $table) {
 ```php
 Schema::create('notes', function (Blueprint $table) {
     $table->id();
-    $table->foreignId('course_id')->constrained();
+    $table->foreignId('album_id')->constrained();
     $table->string('image_url');
-    $table->string('title',100);
-    $table->string('description');
-    $table->boolean('isHomework');
-    $table->dateTime('dueTo');
+    // $table->string('title',100);
+    // $table->string('description');
+    // $table->boolean('isHomework');
+    // $table->dateTime('dueTo');
     $table->timestamps();
 });
 ```
@@ -145,23 +133,13 @@ public function user(){
 }
 
 public function courses(){
-    return $this->hasMany(Course::class);
-}
-
-
-Course
-public function album(){
-    return $this->belongsTo(Album::class);
-}
-
-public function notes(){
     return $this->hasMany(Note::class);
 }
 
 
 Note
 public function course(){
-    return $this->belongsTo(Course::class);
+    return $this->belongsTo(Album::class);
 }
 ```
 

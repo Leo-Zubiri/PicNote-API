@@ -12,7 +12,11 @@ class Album extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'description'
+        'group',
+        'grade',
+        'start_schedule',
+        'end_schedule',
+        'daysperweek'
     ];
 
     public function user(){
@@ -20,6 +24,6 @@ class Album extends Model
     }
 
     public function courses(){
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Note::class);
     }
 }

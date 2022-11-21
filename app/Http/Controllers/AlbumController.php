@@ -73,8 +73,8 @@ class AlbumController extends Controller
         //
     }
 
-    public function getCourses(Album $album){
-        $courses = $album->courses();
-        return $courses;
-    }
+    // public function getCourses(Album $album){
+    //     $courses = $album->courses();
+    //     return $courses;
+    // }
 }
