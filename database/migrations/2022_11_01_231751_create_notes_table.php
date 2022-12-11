@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('image_url');
             // $table->string('title',100);
             // $table->string('description');
-            // $table->boolean('isHomework');
-            // $table->dateTime('dueTo');
+            $table->boolean('isHomework');
+            $table->dateTime('dueTo');
             $table->timestamps();
         });
     }

@@ -10,11 +10,9 @@ class Note extends Model
     use HasFactory;
     protected $fillable = [
         'album_id',
-        'image_url'
-        // 'title',
-        // 'description',
-        // 'isHomework',
-        // 'dueTo'
+        'image_url',
+        'isHomework',
+        'dueTo'
     ];
 
     public function course(){

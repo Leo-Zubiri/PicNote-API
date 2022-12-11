@@ -45,7 +45,7 @@ class AlbumController extends Controller
      */
     public function show(Album $album)
     {
-        $notes = Album::find($album)->courses();
+        $notes = Album::find($album)->notes();
         $paginador = $notes::paginate(10);
         return $paginador;
     }

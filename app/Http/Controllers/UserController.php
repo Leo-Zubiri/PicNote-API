@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -15,9 +16,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $credentials = request(['email', 'password']);
+
+        if (!Auth::attempt($credentials)) {
+            return jsend_fail("Unauthorized");
+        }
+
+        $user = $request->user();
+        return $user;
     }
 
     /**
@@ -52,7 +60,8 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-
+        // Ruta protegida por el api_token
+        return $user;
     }
 
     /**

@@ -36,12 +36,6 @@ Table Album{
   name varchar
   desc varchar
   createdAt datetime
-}
-
-Table Course{
-  courseID int
-  albumID int [ref: > Album.albumID]
-  name varchar
   group char
   grade int
   start_schedule datetime
@@ -49,12 +43,11 @@ Table Course{
   daysperweek varchar
 }
 
+
 Table Note {
   noteID int
-  courseID int [ref: > Course.courseID]
+  albumID int [ref: > Album.albumID]
   imageUrl varchar
-  title varchar
-  desc varchar
   createdAt datetime
   isHomework boolean
   dueTo datetime
@@ -106,10 +99,8 @@ Schema::create('notes', function (Blueprint $table) {
     $table->id();
     $table->foreignId('album_id')->constrained();
     $table->string('image_url');
-    // $table->string('title',100);
-    // $table->string('description');
-    // $table->boolean('isHomework');
-    // $table->dateTime('dueTo');
+    $table->boolean('isHomework');
+    $table->dateTime('dueTo');
     $table->timestamps();
 });
 ```
