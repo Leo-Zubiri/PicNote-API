@@ -19,25 +19,22 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/user','App\Http\Controllers\UserController@index');
 
+Route::get('/user','App\Http\Controllers\UserController@index');
 Route::post('/user/create','App\Http\Controllers\UserController@store');
 
-
-
-Route::put('/user/{user}','App\Http\Controllers\UserController@update');
-Route::delete('user/{user}','App\Http\Controllers\UserController@destroy');
-// Route::get('user/{user}/albums','App\Http\Controllers\UserController@getAlbums');
-
-
-
-
+// Protección por API_TOKEN
 Route::group(["middleware" => "auth:api"], function () {
     Route::get('/user/{user}','App\Http\Controllers\UserController@show');
-    
-    Route::post('/album/create','App\Http\Controllers\AlbumController@store');
-    Route::get('album/{album}','App\Http\Controllers\AlbumController@show');
-    Route::put('album/{album}','App\Http\Controllers\AlbumController@update');
-    Route::delete('album/{album}','App\Http\Controllers\AlbumController@destroy');
-    // Route::get('album/{album}/courses','App\Http\Controllers\AlbumController@getCourses');
+    Route::put('/user/{user}','App\Http\Controllers\UserController@update');
+    Route::delete('/user/{user}','App\Http\Controllers\UserController@destroy');
+
+    Route::get('/user/{user}/albums/','App\Http\Controllers\AlbumController@index');
+    Route::post('/user/{user}/create-album/','App\Http\Controllers\AlbumController@store');
+    Route::get('/user/{user}/album/{album}','App\Http\Controllers\AlbumController@show');
+    Route::delete('/user/{user}/album/{album}','App\Http\Controllers\AlbumController@destroy');
+
+    Route::get('/user/{user}/album/{album}/{note}','App\Http\Controllers\NoteController@index');
+    Route::post('/user/{user}/album/{album}/','App\Http\Controllers\NoteController@store');
+    Route::delete('/user/{user}/album/{album}/{note}','App\Http\Controllers\NoteController@destroy');
 });

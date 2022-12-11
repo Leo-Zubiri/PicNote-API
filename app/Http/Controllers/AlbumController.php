@@ -17,11 +17,15 @@ class AlbumController extends Controller
      */
 
 
-    public function index(User $usuario)
+    public function index(User $user, Request $request)
     {
-        $albums = User::find($usuario)->albums();
-        $paginador = $albums::paginate(10);
-        return $paginador;
+        // Mostrar los albums de un usuario
+
+        if($user["api_token"] != $request["api_token"])
+            return jsend_fail("Token de usuario no corresponde");
+
+        $albums = $user->albums()->paginate(10);
+        return $albums;
     }
 
     /**
@@ -30,11 +34,22 @@ class AlbumController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(User $user,Request $request)
     {
+        // Crear un album
+        if($user["api_token"] != $request["api_token"])
+            return jsend_fail("Token de usuario no corresponde");
 
-        //$newAlbum = Album::create($request->all());
-        return jsend_success(["message"=>"NICE"]);
+        $album = Album::create([
+            'user_id' => $user["id"],
+            'name' => $request->name, 
+            'group' => $request->group, 
+            'grade' => $request->grade,
+            'start_schedule' => $request->start_schedule,
+            'end_schedule' => $request->end_schedule,
+            'daysperweek'=> $request->daysperweek 
+        ]);
+        return $album;    
     }
 
     /**
@@ -43,11 +58,17 @@ class AlbumController extends Controller
      * @param  \App\Models\Album  $album
      * @return \Illuminate\Http\Response
      */
-    public function show(Album $album)
+    public function show(User $user,Album $album,Request $request)
     {
-        $notes = Album::find($album)->notes();
-        $paginador = $notes::paginate(10);
-        return $paginador;
+        // Mostrar contenido del album
+
+        if($user["api_token"] != $request["api_token"])
+            return jsend_fail("Token de usuario no corresponde");
+
+        
+        $notes = $album->notes()->paginate(10);
+
+        return $notes;
     }
 
     /**
@@ -68,13 +89,14 @@ class AlbumController extends Controller
      * @param  \App\Models\Album  $album
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Album $album)
+    public function destroy(User $user,Album $album,Request $request)
     {
-        //
+        if($user["api_token"] != $request["api_token"])
+            return jsend_fail("Token de usuario no corresponde");
+        
+        $album->delete();
+        return jsend_success("Album deleted");
     }
 
-    // public function getCourses(Album $album){
-    //     $courses = $album->courses();
-    //     return $courses;
-    // }
+
 }

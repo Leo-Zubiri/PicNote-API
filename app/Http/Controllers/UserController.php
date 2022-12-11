@@ -58,10 +58,13 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function show(User $user)
+    public function show(User $user, Request $request)
     {
         // Ruta protegida por el api_token
-        return $user;
+        if($user["api_token"] == $request["api_token"])
+            return $user;
+        
+        return jsend_fail("Token de usuario no corresponde");
     }
 
     /**
@@ -73,9 +76,12 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        $user->update($request->all());
+        if($user["api_token"] == $request["api_token"]){
+            $user->update($request->all());
+            return jsend_success(["message"=>"User updated"]);
+        }
 
-        return jsend_success(["message"=>"User updated"]);
+        return jsend_fail("Token de usuario no corresponde");
     }
 
     /**
@@ -84,14 +90,21 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(User $user,Request $request)
     {
-        $user->delete();
-        return jsend_success(["message"=>"User eliminated"]);
+        if($user["api_token"] == $request["api_token"]){
+            $user->delete();
+            return jsend_success(["message"=>"User eliminated"]);
+        }
+
+        return jsend_fail("User not deleted");
     }
 
     public function getAlbums(User $user){
         $albums = $user->albums();
-        return $albums;
+    
+        if($albums)
+            return jsend_fail("No existen albums creados");
+        return $user;
     }
 }

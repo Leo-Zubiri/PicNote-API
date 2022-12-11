@@ -23,7 +23,8 @@ class Album extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function courses(){
+    public function notes(){
         return $this->hasMany(Note::class);
     }
+
 }

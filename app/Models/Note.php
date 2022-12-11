@@ -15,7 +15,7 @@ class Note extends Model
         'dueTo'
     ];
 
-    public function course(){
+    public function album(){
         return $this->belongsTo(Album::class);
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('album_id')->constrained();
+            $table->foreignId('album_id')->constrained()->onDelete('cascade');;
             $table->string('image_url');
             // $table->string('title',100);
             // $table->string('description');
